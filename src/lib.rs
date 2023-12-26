@@ -53,8 +53,11 @@ where
     B: usb_device::bus::UsbBus,
 {
     UsbDeviceBuilder::new(bus, UsbVidPid(VID, PID))
-        .manufacturer("RIIR Task Force")
-        .product("Keyberon")
-        .serial_number(env!("CARGO_PKG_VERSION"))
+        .strings(&[StringDescriptors::new(LangID::EN_US)
+            .manufacturer("RIIR Task Force")
+            .product("Keyberon")
+            .serial_number(env!("CARGO_PKG_VERSION"))])
+        // Won't hit too many languages error with one language.
+        .unwrap()
         .build()
 }
